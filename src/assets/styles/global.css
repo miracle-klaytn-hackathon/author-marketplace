@@ -1,0 +1,41 @@
+/* GLOBAL STYLES
+   ========================================================================== */
+
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #ffffff;
+  color: #3a3a3c;
+  min-width: 375px;
+  scroll-behavior: smooth;
+
+  overflow: initial !important;
+  padding: 0 !important;
+}
+
+/**
+  * Apply border-box style to all elements
+  */
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/**
+  * Remove underline of <a> tag.
+  */
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea {
+  font-family: "Montserrat", sans-serif;
+}
+
+#nav-popover {
+  border: none;
+}
