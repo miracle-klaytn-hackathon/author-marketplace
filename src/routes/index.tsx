@@ -34,7 +34,8 @@ const UpdatePassword = React.lazy(
 );
 const NotFound = React.lazy(() => import("pages/not-found"));
 const Report = React.lazy(() => import("pages/report"));
-const Dashboard = React.lazy(() => import("pages/dashboard"));
+const Marketplace = React.lazy(() => import("pages/marketplace"));
+const MarketplaceDetail = React.lazy(() => import("pages/marketplace/detail"));
 const PageCompanyProfile = React.lazy(() => import("pages/company-profile"));
 const CompanyProfile = React.lazy(
   () => import("pages/company-profile/CompanyProfile")
@@ -116,7 +117,8 @@ const routes: RouteObject[] = [
       </AuthRoute>
     ),
     children: [
-      { index: true, path: ROUTES.dashboard, element: <Dashboard /> },
+      { index: true, path: ROUTES.marketplace, element: <Marketplace /> },
+      { path: ROUTES.marketplaceDetail, element: <MarketplaceDetail /> },
       { path: ROUTES.report, element: <Report /> },
       {
         path: ROUTES.companyProfile,

@@ -11,6 +11,8 @@ const ROUTES = {
   signUp: "/sign-up",
   termsAndCondition: "/terms-and-condition",
   forgotPassword: "/forgot-password",
+  marketplace: "/marketplace",
+  marketplaceDetail: "/marketplace/:id",
   dashboard: "/dashboard",
   report: "/report",
   scope1: "/scope1",

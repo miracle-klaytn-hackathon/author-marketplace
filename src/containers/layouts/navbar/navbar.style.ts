@@ -24,9 +24,17 @@ const Styled = {
     gap: 42px;
     align-items: center;
   `,
-  WrapLogo: styled.div``,
+  WrapLogo: styled.div`
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 24px;
+  `,
   Logo: styled.img`
     cursor: pointer;
+    width: 50px;
+    margin-right: 10px;
   `,
   Nav: styled.div`
     overflow: hidden;

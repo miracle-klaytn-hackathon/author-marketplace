@@ -14,7 +14,7 @@ const Default = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === ROUTES.home) {
-      navigate(ROUTES.dashboard);
+      navigate(ROUTES.marketplace);
     }
   }, [location.pathname, navigate]);
 
