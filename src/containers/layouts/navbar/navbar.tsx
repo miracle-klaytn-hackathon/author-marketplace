@@ -11,6 +11,7 @@ import ROUTES from "routes/constant";
 import { useLocation, useNavigate } from "react-router-dom";
 import Avatar from "assets/images/image-20230726-022407.png";
 import { UserInfo } from "store/login.slice";
+import ModalConnectWallet from "components/modal/ModalConnectWallet";
 
 interface optionsPopup {
   label: string;
@@ -70,7 +71,7 @@ const Navbar = () => {
   const refUser = useRef(null);
   const [anchorEl, setAnchorEl] = useState<HTMLLIElement | null>(null);
   const [currentName, setCurrentName] = useState("");
-
+  const [modalConnectVisible, setmodalConnectVisible] = useState(false);
   const location = useLocation();
   const [userInfo, setUserInfo] = useSessionStorage<UserInfo | null>(
     "user",
@@ -121,9 +122,18 @@ const Navbar = () => {
 
   return (
     <Styled.Container>
+      <ModalConnectWallet
+        open={modalConnectVisible}
+        onClose={() => setmodalConnectVisible(false)}
+      />
       <Styled.NavBar>
         <Styled.WrapLogo>
-          {/* <Styled.Logo src={Logo} alt="" onClick={handleClickLogo} /> */}
+          <Styled.Logo
+            src="https://opensea.io/static/images/logos/opensea-logo.svg"
+            alt=""
+            onClick={handleClickLogo}
+          />
+          Close sea
         </Styled.WrapLogo>
 
         <Styled.Nav>
@@ -131,16 +141,20 @@ const Navbar = () => {
             <Styled.Item>
               <Styled.Link
                 className={
-                  location.pathname.includes(ROUTES.dashboard)
+                  location.pathname.includes(ROUTES.marketplace)
                     ? "active-nav"
                     : ""
                 }
-                onClick={() => navigate(ROUTES.dashboard)}
+                onClick={() => navigate(ROUTES.marketplace)}
               >
-                Dashboard
+                Marketplace
               </Styled.Link>
             </Styled.Item>
-
+            <Styled.Item>
+              <Styled.Link onClick={() => setmodalConnectVisible(true)}>
+                Connect Wallet
+              </Styled.Link>
+            </Styled.Item>
             <Styled.Item>
               <Styled.Notification>
                 <Notification />
