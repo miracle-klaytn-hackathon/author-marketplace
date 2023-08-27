@@ -87,6 +87,25 @@ const Styled = {
   Notification: styled.span`
     display: flex;
     align-items: center;
+    cursor: pointer;
+    .cart-icon {
+      width: 25px;
+    }
+    .badge {
+      width: 20px;
+      height: 20px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3px;
+      font-size: 10px;
+      top: -5px;
+      position: absolute;
+      left: 19px;
+    }
   `,
 
   User: styled.div`

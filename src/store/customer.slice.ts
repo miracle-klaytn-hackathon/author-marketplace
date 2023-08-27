@@ -4,6 +4,7 @@ import { CustomerRes } from "api/customer/customer.interface";
 
 const initialState = {
   listCustomer: [] as CustomerRes[],
+  cartList: [] as any,
   isLoading: false,
   error: "",
 };
@@ -17,6 +18,13 @@ const actions = {
         return rejectWithValue(response);
       }
       return response as unknown as CustomerRes[];
+    }
+  ),
+  actionCart: createAsyncThunk(
+    "POST/ACTION_CART",
+    async (newListCart: any, { rejectWithValue }) => {
+      localStorage.setItem("cartList", JSON.stringify(newListCart));
+      return newListCart;
     }
   ),
 };
@@ -34,6 +42,17 @@ const customer = createSlice({
       state.listCustomer = action.payload;
     });
     builder.addCase(actions.getListCustomer.rejected, (state, action: any) => {
+      state.isLoading = false;
+      state.error = action.payload?.message;
+    });
+    builder.addCase(actions.actionCart.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(actions.actionCart.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.cartList = action.payload;
+    });
+    builder.addCase(actions.actionCart.rejected, (state, action: any) => {
       state.isLoading = false;
       state.error = action.payload?.message;
     });
