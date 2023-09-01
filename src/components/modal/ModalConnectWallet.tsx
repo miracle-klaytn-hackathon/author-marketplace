@@ -10,6 +10,7 @@ import { ReactNode, useCallback } from "react";
 import { styled } from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { connectors } from "helpers/connectors";
+import metamaskLogo from "../../assets/images/mm.png";
 
 const Styled = {
   BootstrapDialog: styled(Dialog)`
@@ -36,10 +37,16 @@ const Styled = {
     padding: 8px 12px;
     min-width: 85px;
   `,
+
   BtnConfirm: styled(Button)`
     padding: 8px 12px;
     min-width: 85px;
   `,
+
+  BtnLogo: styled.img`
+    height: 50px;
+    width: 50px;
+  `
 };
 
 export interface PropsConfirmation {
@@ -74,7 +81,17 @@ const ModalConnectWallet = ({
         open={open}
       >
         <Styled.Content dividers>
-          <div onClick={handleConnect}>Metamask</div>
+          <div>
+            <Styled.BtnConfirm
+              onClick={handleConnect} 
+              text={"Metamask"} 
+              icon={
+                <Styled.BtnLogo 
+                  src={metamaskLogo} 
+                  alt='metamask-logo' 
+                />} 
+              />
+          </div>
         </Styled.Content>
       </Styled.BootstrapDialog>
     </div>
