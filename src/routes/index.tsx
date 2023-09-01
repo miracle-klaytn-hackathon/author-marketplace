@@ -44,6 +44,7 @@ const EditCompanyProfile = React.lazy(
   () => import("pages/company-profile/edit-company-profile")
 );
 const UserProfile = React.lazy(() => import("pages/user-profile"));
+const CartPage = React.lazy(() => import("pages/cart"));
 const PageInputScope = React.lazy(() => import("pages/input-scope"));
 const PageScopeOne = React.lazy(() => import("pages/input-scope/scope/Scope1"));
 const PageScopeTow = React.lazy(() => import("pages/input-scope/scope/Scope2"));
@@ -129,52 +130,8 @@ const routes: RouteObject[] = [
         ],
       },
       { path: ROUTES.userProfile, element: <UserProfile /> },
+      { path: ROUTES.cart, element: <CartPage /> },
       { index: true, path: ROUTES.notfound, element: <NotFound /> },
-      {
-        path: ROUTES.inputScope1,
-        element: <PageInputScope />,
-        children: [
-          { path: "", element: <PageScopeOne /> },
-          {
-            path: ROUTES.create,
-            element: <Score1CreationPage />,
-          },
-          {
-            path: ROUTES.scope1Detail,
-            element: <Score1EditPage />,
-          },
-        ],
-      },
-      {
-        path: ROUTES.inputScope2,
-        element: <PageInputScope />,
-        children: [
-          { path: "", element: <PageScopeTow /> },
-          {
-            path: ROUTES.create,
-            element: <Score1CreationPage />,
-          },
-          {
-            path: ROUTES.scope2Detail,
-            element: <Score1EditPage />,
-          },
-        ],
-      },
-      {
-        path: ROUTES.inputScope3,
-        element: <PageInputScope />,
-        children: [
-          { path: "", element: <PageScope3 /> },
-          {
-            path: ROUTES.create,
-            element: <Score1CreationPage />,
-          },
-          {
-            path: ROUTES.scope3Detail,
-            element: <Score1EditPage />,
-          },
-        ],
-      },
     ],
   },
 ];

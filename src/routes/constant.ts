@@ -24,6 +24,7 @@ const ROUTES = {
   successfully: "successfully",
   tokenExpired: "token-expired",
   edit: "edit",
+  cart: "/cart",
   inputScope1: "/scope1",
   inputScope2: "/scope2",
   inputScope3: "/scope3",
