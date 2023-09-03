@@ -16,10 +16,15 @@ const Default = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const getUserCarts = (defaultValue: any) => {
+    const carts = localStorage.getItem("cartList")
+    return (carts && JSON.parse(carts)) || defaultValue
+  }
+
   useEffect(() => {
     dispatch(
       actions.customer.actionCart(
-        JSON.parse(localStorage.getItem("cartList") || "")
+        getUserCarts(null)
       )
     );
     if (location.pathname === ROUTES.home) {
