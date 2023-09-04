@@ -36,23 +36,23 @@ const Style = {
     }
   `,
 };
-const NftCard = ({ cartInfo }: any) => {
+const NftCard = ({ cardInfo }: any) => {
   const navigate = useNavigate();
   return (
     <div>
       <Style.Container
-        onClick={() => navigate(`${ROUTES.marketplace}/${cartInfo.id}`)}
+        onClick={() => navigate(`${ROUTES.marketplace}/${cardInfo.id}`)}
       >
         <img
           src="https://i.seadn.io/gcs/files/c2b0ac6e3709bf736aaa1a8d5ae04546.png?auto=format&dpr=1&h=500"
           alt=""
         />
         <div className="content">
-          <div className="title">{cartInfo.name}</div>
+          <div className="title">{cardInfo.name}</div>
           <div className="wrap-description">
             <div className="floor">
               <div className="sub-title">Floor</div>
-              <b>{cartInfo.price} ETH</b>
+              <b>{cardInfo.price} ETH</b>
             </div>
             <div className="volume">
               <div className="sub-title">Total Volume</div>
