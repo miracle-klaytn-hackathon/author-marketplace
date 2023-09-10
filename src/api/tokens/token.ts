@@ -11,12 +11,19 @@ export interface BookToken {
 }
 
 export const getBookTokens = () : Promise<AxiosResponse<BookToken[], any>> => {
-    console.log(process.env.BACKEND_API)
     return genericRequest
     .get(`/books/recommendation`)
     .then((res) => {
-      console.log(res)
       return res;
     })
     .catch((error) => Promise.reject(error as IBaseErrorResponse));
+}
+
+export const getBookTokenABI = () : Promise<AxiosResponse<string, any>> => {
+  return genericRequest
+  .get(`/books/abi`)
+  .then((res) => {
+    return res;
+  })
+  .catch((error) => Promise.reject(error as IBaseErrorResponse));
 }
