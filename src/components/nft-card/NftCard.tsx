@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import ROUTES from "routes/constant";
-import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom"
+import ROUTES from "routes/constant"
+import { styled } from "styled-components"
 
 const Style = {
   Container: styled.div`
@@ -35,9 +35,9 @@ const Style = {
       }
     }
   `,
-};
+}
 const NftCard = ({ cardInfo }: any) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div>
       <Style.Container
@@ -50,6 +50,10 @@ const NftCard = ({ cardInfo }: any) => {
         <div className="content">
           <div className="title">{cardInfo.name}</div>
           <div className="wrap-description">
+            <div className="symbol">
+              <div className="sub-title">Symbol</div>
+              <b>{cardInfo.symbol}</b>
+            </div>
             <div className="floor">
               <div className="sub-title">Floor</div>
               <b>{cardInfo.price} ETH</b>
@@ -62,7 +66,7 @@ const NftCard = ({ cardInfo }: any) => {
         </div>
       </Style.Container>
     </div>
-  );
-};
+  )
+}
 
-export default NftCard;
+export default NftCard

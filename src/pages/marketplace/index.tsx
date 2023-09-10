@@ -33,7 +33,9 @@ const Dashboard = () => {
   const [bookNfts, setBookNft] = useState<BookToken[]>()
 
   useEffect(() => {
-    setBookNft(getBookTokens())
+    getBookTokens().then(tokens => {
+      setBookNft(tokens.data)
+    })
   }, [])
 
   const searchText = useCallback((value?: string) => {
