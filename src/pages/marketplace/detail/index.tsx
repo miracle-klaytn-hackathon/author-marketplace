@@ -1,11 +1,12 @@
 import { Grid } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import Button from "components/button/button";
 import { useDispatch, useSelector } from "react-redux";
 import { TStore, actions } from "store";
 import { cloneDeep } from "lodash";
 import { useParams } from "react-router-dom";
+import { BookToken, getBookToken } from 'api/tokens/token';
 
 const Style = {
   WrapImg: styled.div`
@@ -29,12 +30,20 @@ const Style = {
 };
 
 const MarketPlaceDetail = () => {
+  const [bookToken, setBookToken] = useState<BookToken>();
   const dispatch = useDispatch();
   const { cartList } = useSelector((state: TStore) => state.customer);
   const params = useParams();
   const isExist = cartList?.some(
     (item: any) => String(item.id) === String(params?.id)
   );
+
+  useEffect(() => {
+    const address = params?.id
+    address && getBookToken(address).then(
+      res => setBookToken(res.data)
+    )
+  }, [])
 
   const handleAddToCart = useCallback(() => {
     let currentList = cloneDeep(cartList) || [];
@@ -48,16 +57,17 @@ const MarketPlaceDetail = () => {
     }
     currentList.push({
       id: params?.id,
-      name: "test123",
-      price: 123,
+      name: bookToken?.name,
+      symbol: bookToken?.symbol,
+      owner: bookToken?.owner
     });
 
     dispatch(actions.customer.actionCart(currentList));
-  }, [cartList, dispatch, isExist, params.id]);
+  }, [cartList, dispatch, isExist, params.id, bookToken]);
 
   return (
     <Style.Container>
-      <Grid container spacing={1}>
+      {bookToken && <Grid container spacing={1}>
         <Grid item xs={6}>
           <Style.WrapImg>
             <img
@@ -68,14 +78,14 @@ const MarketPlaceDetail = () => {
         </Grid>
         <Grid item xs={6}>
           <div className="content">
-            <h1 className="title">Wreck League Majestics</h1>
+            <h1 className="title">{bookToken.name}</h1>
             <div className="owner">
-              Owned by <b>luan</b>
+              Owned by <b>{bookToken.owner}</b>
             </div>
             <div className="wrap-description">
-              <div className="floor">
-                <div className="sub-title">Best offer</div>
-                <b>0.14 ETH</b>
+              <div className="symbol">
+                <div className="sub-title">Symbol</div>
+                <b>{bookToken.symbol}</b>
               </div>
               <div className="volume">
                 <div className="sub-title">Total Volume</div>
@@ -88,9 +98,9 @@ const MarketPlaceDetail = () => {
             onClick={handleAddToCart}
           />
         </Grid>
-      </Grid>
+      </Grid>}
     </Style.Container>
-  );
-};
+  )
+}
 
 export default MarketPlaceDetail;

@@ -3,11 +3,11 @@ import { genericRequest } from 'api/request'
 import { AxiosResponse } from 'axios'
 
 export interface BookToken {
-    id: string,
+    id?: string,
     name: string,
     address: string,
-    symbol: string
-    price: number
+    symbol: string,
+    owner: string
 }
 
 export const getBookTokens = () : Promise<AxiosResponse<BookToken[], any>> => {
@@ -17,6 +17,16 @@ export const getBookTokens = () : Promise<AxiosResponse<BookToken[], any>> => {
       return res;
     })
     .catch((error) => Promise.reject(error as IBaseErrorResponse));
+}
+
+export const getBookToken = (address: string) : Promise<AxiosResponse<BookToken, any>> => {
+  return genericRequest
+  .get(`/books/${address}`)
+  .then((res) => {
+    console.log(res)
+    return res;
+  })
+  .catch((error) => Promise.reject(error as IBaseErrorResponse));
 }
 
 export const getBookTokenABI = () : Promise<AxiosResponse<string, any>> => {

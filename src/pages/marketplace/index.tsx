@@ -62,9 +62,9 @@ const Dashboard = () => {
         />
       </Style.WrapSearch>
       <Grid container spacing={1}>
-        {bookNfts && bookNfts?.map(cardInfo => (
-          <Grid item xs={3} key={cardInfo.id}>
-            <NftCard cardInfo={cardInfo} />
+        {bookNfts && bookNfts?.map(token => (
+          <Grid item xs={3} key={token.id}>
+            <NftCard bookToken={token} />
           </Grid>
         ))}
       </Grid>
