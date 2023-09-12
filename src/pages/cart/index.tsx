@@ -3,7 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 import { getBookTokenABI } from 'api/tokens/token'
 import Button from 'components/button/button'
 import { ethers } from 'ethers'
-import React, { useEffect, useState } from "react"
+import { connectors } from 'helpers/connectors'
+import React, { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { TStore } from "store"
 import styled from "styled-components"
@@ -38,8 +39,7 @@ const Styled = {
 const CartPage = () => {
   const [bookAbi, setBookAbi] = useState<string>("");
   const { cartList } = useSelector((state: TStore) => state.customer)
-  // TODO: fix undefined issue
-  const { library, account } = useWeb3React();
+  const { activate, active, library, account } = useWeb3React();
 
   useEffect(() => {
     getBookTokenABI().then(
@@ -47,23 +47,13 @@ const CartPage = () => {
     )
   }, [])
 
-  const handleCheckout = async () => {
-    if (!library || !account) {
-      console.error('Web3 is not connected.');
-      return;
-    }
-
-    const contractAddress = cartList[0].address;
-    const contract = new ethers.Contract(contractAddress, bookAbi, library.getSigner(account));
-
-    try {
-      const result = await contract.safeMint(account, "https://i.seadn.io/gcs/files/c2b0ac6e3709bf736aaa1a8d5ae04546.png?auto=format&dpr=1&h=500");
-      console.log('Function result:', result);
-    } catch (error) {
-      console.error('Error calling function:', error);
-    }
-
-  }
+  const handleCheckout = useCallback(() => {
+    activate(connectors.injected)
+      .then(_ => library && cartList.map(
+        (item: any) => new ethers.Contract(item.id, bookAbi, library.getSigner(account))
+      ))
+      .then(contracts => contracts.map((con: any) => con.safeMint(account, "https://i.seadn.io/gcs/files/c2b0ac6e3709bf736aaa1a8d5ae04546.png?auto=format&dpr=1&h=500")))
+  }, [active]);
 
   return (
     <Styled.Container>
