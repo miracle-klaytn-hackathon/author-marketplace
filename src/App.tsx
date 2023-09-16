@@ -16,7 +16,7 @@ import { reload } from "utils/functions";
 import routes from "routes";
 import { ToastContainer } from "react-toastify";
 import { Suspense } from "react";
-import WebProvider from "./web3/Web3Provider";
+import Web3Provider from "./web3/Web3Provider";
 
 /**
  * Entry point for route component
@@ -36,7 +36,7 @@ const App = () => {
     <ErrorBoundary onReset={reload}>
       <BrowserRouter>
         <ThemesProvider>
-          <WebProvider>
+          <Web3Provider>
             <Provider store={store}>
               <Suspense fallback={<>Loading</>}>
                 <Main />
@@ -55,7 +55,7 @@ const App = () => {
                 // icon={renderIcon}
               />
             </Provider>
-          </WebProvider>
+          </Web3Provider>
         </ThemesProvider>
       </BrowserRouter>
     </ErrorBoundary>

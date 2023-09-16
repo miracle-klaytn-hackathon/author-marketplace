@@ -8,9 +8,8 @@ import {
 import Button from "components/button/button";
 import { ReactNode, useCallback } from "react";
 import { styled } from "styled-components";
-import { useWeb3React } from "@web3-react/core";
-import { connectors } from "helpers/connectors";
 import metamaskLogo from "../../assets/images/mm.png";
+import { useWeb3 } from '../../web3/useWeb3'
 
 const Styled = {
   BootstrapDialog: styled(Dialog)`
@@ -62,16 +61,12 @@ const ModalConnectWallet = ({
   content,
   title,
 }: PropsConfirmation) => {
-  const { activate } = useWeb3React();
-  const setProvider = (type: string) => {
-    window.localStorage.setItem("provider", type);
-  };
+  const { connectWallet } = useWeb3();
 
   const handleConnect = useCallback(() => {
-    activate(connectors.injected);
-    setProvider("injected");
+    connectWallet()
     onClose();
-  }, [activate, onClose]);
+  }, [connectWallet, onClose]);
 
   return (
     <div>

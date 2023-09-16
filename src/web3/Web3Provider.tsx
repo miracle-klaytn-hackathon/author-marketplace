@@ -7,7 +7,7 @@ const getLibrary = (provider: any) => {
   return library
 }
 
-const WebProvider = ({ children }: any) => {
+const Web3Provider = ({ children }: any) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       {children}
@@ -15,4 +15,4 @@ const WebProvider = ({ children }: any) => {
   )
 }
 
-export default WebProvider
+export default Web3Provider
