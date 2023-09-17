@@ -10,8 +10,8 @@ import customerReducer, { customerActions } from "./customer.slice";
 import scopeReducer, { scopeActions } from "./scope.slice";
 import signInReducer from "./login.slice";
 import countryReducer, { countryActions } from "./countryList.slice";
-
 import { configureStore } from "@reduxjs/toolkit";
+import bookReducer, { bookActions } from './book.slice'
 
 /**
  * Map actions
@@ -24,6 +24,7 @@ const actions = {
   customer: customerActions,
   scope: scopeActions,
   country: countryActions,
+  book: bookActions
 };
 
 /**
@@ -38,6 +39,7 @@ const reducers = {
   scope: scopeReducer,
   signIn: signInReducer,
   country: countryReducer,
+  book: bookReducer
 };
 
 const store = configureStore({
