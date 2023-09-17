@@ -5,6 +5,8 @@ import NftCard from "components/nft-card/NftCard";
 import TextField from "components/text-field/text-field";
 import { debounce } from "lodash";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { TStore, useDispatch, useSelector } from 'store'
+import { bookActions } from 'store/book.slice'
 import { styled } from "styled-components";
 
 const Style = {
@@ -30,12 +32,11 @@ const Style = {
 
 const Dashboard = () => {
   const [valueSearch, setValueSearch] = useState("");
-  const [bookNfts, setBookNft] = useState<BookToken[]>()
+  const { bookTokens } = useSelector((state: TStore) => state.book)
+  const dispath = useDispatch();
 
   useEffect(() => {
-    getBookTokens().then(tokens => {
-      setBookNft(tokens.data)
-    })
+    dispath(bookActions.getRecommend())
   }, [])
 
   const searchText = useCallback((value?: string) => {
@@ -62,7 +63,7 @@ const Dashboard = () => {
         />
       </Style.WrapSearch>
       <Grid container spacing={1}>
-        {bookNfts && bookNfts?.map(token => (
+        {bookTokens && bookTokens.map(token => (
           <Grid item xs={3} key={token.id}>
             <NftCard bookToken={token} />
           </Grid>

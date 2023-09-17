@@ -15,7 +15,7 @@ const actions = {
       if (response.status < 200 || response.status >= 300) {
         return rejectWithValue(response);
       }
-      return response as unknown as BookToken[];
+      return response.data as unknown as BookToken[];
     }
   )
 };
