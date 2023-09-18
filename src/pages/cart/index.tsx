@@ -1,8 +1,11 @@
-import { Grid } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
-import { TStore } from "store";
-import styled from "styled-components";
+import { Grid } from "@mui/material"
+import { getBookTokenABI } from 'api/tokens/token'
+import Button from 'components/button/button'
+import React, { useCallback, useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { TStore } from "store"
+import styled from "styled-components"
+import { useWeb3 } from '../../web3/useWeb3'
 
 const Styled = {
   Container: styled.div`
@@ -29,28 +32,46 @@ const Styled = {
       }
     }
   `,
-};
+}
 
 const CartPage = () => {
-  const { cartList } = useSelector((state: TStore) => state.customer);
+  const [bookAbi, setBookAbi] = useState<string>("");
+  const { cartList } = useSelector((state: TStore) => state.customer)
+  const { walletConnected, mintNFT } = useWeb3()
+
+  useEffect(() => {
+    getBookTokenABI().then(
+      res => setBookAbi(res.data)
+    )
+  }, [])
+
+  const handleCheckout = useCallback(() => {
+    (walletConnected && bookAbi) && cartList.forEach((item: any) => {
+      mintNFT({
+        tokenAdress: item.id,
+        tokenAbi: bookAbi,
+        tokenUri: "https://i.seadn.io/gcs/files/c2b0ac6e3709bf736aaa1a8d5ae04546.png?auto=format&dpr=1&h=500"
+      })
+    })
+  }, [mintNFT]);
 
   return (
     <Styled.Container>
       <h1>Cart List</h1>
       <Grid container spacing={2}>
-        {cartList?.map((item: any) => (
-          <Grid item xs={12} key={item.id}>
+        {cartList?.map((token: any) => (
+          <Grid item xs={12} key={token.id}>
             <div className="line-info">
               <img
                 src="https://i.seadn.io/gcs/files/c2b0ac6e3709bf736aaa1a8d5ae04546.png?auto=format&dpr=1&h=500"
                 alt=""
               />
               <div className="content">
-                <div className="title">{item.name}</div>
+                <div className="title">{token.name}</div>
                 <div className="wrap-description">
-                  <div className="floor">
-                    <div className="sub-title">Floor</div>
-                    <b>{item.price} ETH</b>
+                  <div className="symbol">
+                    <div className="sub-title">Symbol</div>
+                    <b>{token.symbol}</b>
                   </div>
                   <div className="volume">
                     <div className="sub-title">Total Volume</div>
@@ -62,8 +83,12 @@ const CartPage = () => {
           </Grid>
         ))}
       </Grid>
+      <Button
+        text={"Checkout"}
+        onClick={handleCheckout}
+      />
     </Styled.Container>
-  );
-};
+  )
+}
 
-export default CartPage;
+export default CartPage

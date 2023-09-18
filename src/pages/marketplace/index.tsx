@@ -1,43 +1,13 @@
 import { Grid } from "@mui/material";
+import { BookToken, getBookTokens } from 'api/tokens/token'
 import { ReactComponent as IconSearch } from "assets/images/Search_alt.svg";
 import NftCard from "components/nft-card/NftCard";
 import TextField from "components/text-field/text-field";
 import { debounce } from "lodash";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { TStore, useDispatch, useSelector } from 'store'
+import { bookListActions } from 'store/book-list.slice'
 import { styled } from "styled-components";
-
-const mockData = [
-  {
-    id: 1,
-    name: "test1",
-    price: 123,
-  },
-  {
-    id: 2,
-    name: "test2",
-    price: 123,
-  },
-  {
-    id: 3,
-    name: "test3",
-    price: 123,
-  },
-  {
-    id: 4,
-    name: "test4",
-    price: 123,
-  },
-  {
-    id: 5,
-    name: "test5",
-    price: 123,
-  },
-  {
-    id: 6,
-    name: "test6",
-    price: 123,
-  },
-];
 
 const Style = {
   InputSearch: styled(TextField)`
@@ -61,8 +31,13 @@ const Style = {
 };
 
 const Dashboard = () => {
-  const [modalOnBoardVisible, setModalOnBoardVisible] = useState(true);
   const [valueSearch, setValueSearch] = useState("");
+  const { bookTokens } = useSelector((state: TStore) => state.bookList)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(bookListActions.getRecommend())
+  }, [])
 
   const searchText = useCallback((value?: string) => {
     console.log("value", value);
@@ -88,9 +63,9 @@ const Dashboard = () => {
         />
       </Style.WrapSearch>
       <Grid container spacing={1}>
-        {mockData?.map((cartInfo) => (
-          <Grid item xs={3} key={cartInfo.id}>
-            <NftCard cartInfo={cartInfo} />
+        {bookTokens && bookTokens.map(token => (
+          <Grid item xs={3} key={token.id}>
+            <NftCard bookToken={token} />
           </Grid>
         ))}
       </Grid>

@@ -56,6 +56,15 @@ export interface AxiosResponseC extends AxiosResponse {
   statusCode?: number;
 }
 
+export const genericRequest = axios.create({
+  baseURL: process.env.REACT_APP_API,
+  timeout: 10000,
+  withCredentials: false,
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
+
 export const requestWithoutJwt = axios.create({
   baseURL: process.env.REACT_APP_API,
   timeout: 10000,

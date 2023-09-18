@@ -1,7 +1,7 @@
 /* LAYOUT NAVBAR COMPONENT
    ========================================================================== */
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Styled from "./navbar.style";
 import useSessionStorage from "hooks/useSessionStorage";
 import Logo from "assets/images/Logo_Header.png";
@@ -14,6 +14,7 @@ import Avatar from "assets/images/image-20230726-022407.png";
 import { UserInfo } from "store/login.slice";
 import ModalConnectWallet from "components/modal/ModalConnectWallet";
 import { TStore, useSelector } from "store";
+import { useWeb3 } from '../../../web3/useWeb3'
 
 interface optionsPopup {
   label: string;
@@ -69,6 +70,8 @@ export const PopupNav = ({ options, anchorEl, onClose }: PropsPopupNav) => {
 };
 
 const Navbar = () => {
+  const { walletConnected, getAccountBalance } = useWeb3();
+  const [balance, setBalance] = useState<string>();
   const refScope = useRef(null);
   const refUser = useRef(null);
   const [anchorEl, setAnchorEl] = useState<HTMLLIElement | null>(null);
@@ -80,6 +83,10 @@ const Navbar = () => {
     null
   );
   const { cartList } = useSelector((state: TStore) => state.customer);
+
+  useEffect(() => {
+    getAccountBalance()?.then(balance => setBalance(balance))
+  }, [walletConnected])
 
   const navigate = useNavigate();
   const [, setRefreshToken] = useSessionStorage<string | null>(
@@ -155,7 +162,7 @@ const Navbar = () => {
             </Styled.Item>
             <Styled.Item>
               <Styled.Link onClick={() => setmodalConnectVisible(true)}>
-                Connect Wallet
+                {balance ? `Balance: ${balance}` : "Connect Wallet"}
               </Styled.Link>
             </Styled.Item>
             <Styled.Item>
