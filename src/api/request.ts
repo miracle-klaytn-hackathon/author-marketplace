@@ -57,7 +57,7 @@ export interface AxiosResponseC extends AxiosResponse {
 }
 
 export const genericRequest = axios.create({
-  baseURL: "http://localhost:8080/author-contract",
+  baseURL: process.env.REACT_APP_API,
   timeout: 10000,
   withCredentials: false,
   headers: {

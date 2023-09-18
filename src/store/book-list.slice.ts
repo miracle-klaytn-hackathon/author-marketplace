@@ -9,19 +9,19 @@ const initialState = {
 
 const actions = {
   getRecommend: createAsyncThunk(
-    "POST/GET_Recommend_Book",
+    "POST/GET_Recommend_Books",
     async (_, { rejectWithValue }) => {
       const response = await getBookTokens();
       if (response.status < 200 || response.status >= 300) {
-        return rejectWithValue(response);
+        return rejectWithValue(response.data);
       }
       return response.data as unknown as BookToken[];
     }
   )
 };
 
-const book = createSlice({
-  name: "bookSlice",
+const bookListSlice = createSlice({
+  name: "bookListSlice",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -42,6 +42,6 @@ const book = createSlice({
 /**
  * Export all actions, reducer for customer
  */
-export const bookActions = { ...book.actions, ...actions };
+export const bookListActions = { ...bookListSlice.actions, ...actions };
 
-export default book.reducer;
+export default bookListSlice.reducer;

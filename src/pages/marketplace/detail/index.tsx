@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TStore, actions } from "store";
 import { cloneDeep } from "lodash";
 import { useParams } from "react-router-dom";
-import { BookToken, getBookToken } from 'api/tokens/token';
+import { bookDetailActions } from "store/book-detail.slice";
 
 const Style = {
   WrapImg: styled.div`
@@ -30,9 +30,9 @@ const Style = {
 };
 
 const MarketPlaceDetail = () => {
-  const [bookToken, setBookToken] = useState<BookToken>();
   const dispatch = useDispatch();
   const { cartList } = useSelector((state: TStore) => state.customer);
+  const { bookToken } = useSelector((state: TStore) => state.bookDetail);
   const params = useParams();
   const isExist = cartList?.some(
     (item: any) => String(item.id) === String(params?.id)
@@ -40,9 +40,7 @@ const MarketPlaceDetail = () => {
 
   useEffect(() => {
     const address = params?.id
-    address && getBookToken(address).then(
-      res => setBookToken(res.data)
-    )
+    address && dispatch(bookDetailActions.getDetail(address))
   }, [])
 
   const handleAddToCart = useCallback(() => {

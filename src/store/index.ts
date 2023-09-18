@@ -11,7 +11,8 @@ import scopeReducer, { scopeActions } from "./scope.slice";
 import signInReducer from "./login.slice";
 import countryReducer, { countryActions } from "./countryList.slice";
 import { configureStore } from "@reduxjs/toolkit";
-import bookReducer, { bookActions } from './book.slice'
+import bookListReducer, { bookListActions } from './book-list.slice'
+import bookDetailReducer, { bookDetailActions } from './book-detail.slice'
 
 /**
  * Map actions
@@ -24,7 +25,8 @@ const actions = {
   customer: customerActions,
   scope: scopeActions,
   country: countryActions,
-  book: bookActions
+  bookList: bookListActions,
+  bookDetail: bookDetailActions
 };
 
 /**
@@ -39,7 +41,8 @@ const reducers = {
   scope: scopeReducer,
   signIn: signInReducer,
   country: countryReducer,
-  book: bookReducer
+  bookList: bookListReducer,
+  bookDetail: bookDetailReducer
 };
 
 const store = configureStore({

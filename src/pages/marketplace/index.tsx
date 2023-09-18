@@ -6,7 +6,7 @@ import TextField from "components/text-field/text-field";
 import { debounce } from "lodash";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { TStore, useDispatch, useSelector } from 'store'
-import { bookActions } from 'store/book.slice'
+import { bookListActions } from 'store/book-list.slice'
 import { styled } from "styled-components";
 
 const Style = {
@@ -32,11 +32,11 @@ const Style = {
 
 const Dashboard = () => {
   const [valueSearch, setValueSearch] = useState("");
-  const { bookTokens } = useSelector((state: TStore) => state.book)
-  const dispath = useDispatch();
+  const { bookTokens } = useSelector((state: TStore) => state.bookList)
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispath(bookActions.getRecommend())
+    dispatch(bookListActions.getRecommend())
   }, [])
 
   const searchText = useCallback((value?: string) => {
