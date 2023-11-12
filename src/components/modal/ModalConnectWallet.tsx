@@ -2,14 +2,16 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Typography,
   DialogActions,
 } from "@mui/material";
 import Button from "components/button/button";
 import { ReactNode, useCallback } from "react";
 import { styled } from "styled-components";
+import { BrowserProvider } from "ethers";
+import { useWeb3 } from "../../web3/useWeb3";
+
 import metamaskLogo from "../../assets/images/mm.png";
-import { useWeb3 } from '../../web3/useWeb3'
+import etherLogo from "assets/images/EtheriumIcon.svg";
 
 const Styled = {
   BootstrapDialog: styled(Dialog)`
@@ -45,7 +47,7 @@ const Styled = {
   BtnLogo: styled.img`
     height: 50px;
     width: 50px;
-  `
+  `,
 };
 
 export interface PropsConfirmation {
@@ -54,6 +56,8 @@ export interface PropsConfirmation {
   content?: string | ReactNode;
   onClose: () => void;
 }
+
+const provider = new BrowserProvider(window.ethereum);
 
 const ModalConnectWallet = ({
   open,
@@ -64,9 +68,16 @@ const ModalConnectWallet = ({
   const { connectWallet } = useWeb3();
 
   const handleConnect = useCallback(() => {
-    connectWallet()
+    connectWallet();
     onClose();
   }, [connectWallet, onClose]);
+
+  const connectEtherWallet = async () => {
+    await provider
+      .send("eth_requestAccounts", [])
+      .catch(() => console.log("user rejected request"));
+    onClose();
+  };
 
   return (
     <div>
@@ -78,14 +89,18 @@ const ModalConnectWallet = ({
         <Styled.Content dividers>
           <div>
             <Styled.BtnConfirm
-              onClick={handleConnect} 
-              text={"Metamask"} 
-              icon={
-                <Styled.BtnLogo 
-                  src={metamaskLogo} 
-                  alt='metamask-logo' 
-                />} 
-              />
+              onClick={handleConnect}
+              text={"Metamask"}
+              icon={<Styled.BtnLogo src={metamaskLogo} alt="metamask-logo" />}
+            />
+          </div>
+          <div>
+            <Styled.BtnConfirm
+              onClick={connectEtherWallet}
+              className="bases__width100 bases__margin--top12"
+              text={"Etherium"}
+              icon={<Styled.BtnLogo src={etherLogo} alt="etherium-logo" />}
+            />
           </div>
         </Styled.Content>
       </Styled.BootstrapDialog>

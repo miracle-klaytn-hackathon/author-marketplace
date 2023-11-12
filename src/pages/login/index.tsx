@@ -15,6 +15,15 @@ import * as yup from "yup";
 import { signIn } from "api/login/login.api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { BrowserProvider } from "ethers";
+import { SiweMessage } from "siwe";
+
+import { ReactComponent as EtherIcon } from "assets/images/EtheriumIcon.svg";
+import { BASE_API } from "constants/common";
+
+const domain = window.location.host;
+const origin = window.location.origin;
+const provider = new BrowserProvider(window.ethereum);
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,6 +68,44 @@ const Login = () => {
       .required("This is required field!"),
     password: yup.string().required("This is required field!"),
   });
+
+  const createSiweMessage = (
+    address: string | undefined,
+    statement: string | undefined
+  ) => {
+    const siweMessage = new SiweMessage({
+      domain,
+      address,
+      statement,
+      uri: origin,
+      version: "1",
+      chainId: 1,
+    });
+    return siweMessage.prepareMessage();
+  };
+
+  let message: string = "";
+  let signature: string = "";
+
+  const signInWithEthereum = async () => {
+    const signer = await provider.getSigner();
+    message = createSiweMessage(
+      signer.address,
+      "Sign in with Ethereum to the app."
+    );
+    signature = await signer.signMessage(message);
+  };
+
+  const sendForVerification = async () => {
+    const res = await fetch(`${BASE_API}/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message, signature }),
+    });
+    console.log(await res.text());
+  };
 
   return (
     <LoginStyled.Container>
@@ -110,6 +157,15 @@ const Login = () => {
                 text="Log In"
                 className="btn-success"
                 isLoading={isLoading}
+              />
+              {/* Ether login */}
+              <LoginStyled.Button
+                type="submit"
+                text="Log In With Etherium"
+                className="btn-success bases__margin--top16"
+                isLoading={isLoading}
+                icon={<EtherIcon />}
+                onClick={signInWithEthereum}
               />
               <LoginStyled.SignUp>
                 <LoginStyled.Link href="https://www.envirocapture.au/contact">

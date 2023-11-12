@@ -18,6 +18,9 @@ import { ToastContainer } from "react-toastify";
 import { Suspense } from "react";
 import Web3Provider from "./web3/Web3Provider";
 
+import 'assets/styles/bases/_index.scss'
+import 'assets/styles/utils/_index.scss'
+
 /**
  * Entry point for route component
  * @returns JSX Element represents for route components

@@ -4,7 +4,7 @@ import { connectors } from './connectors'
 import useLocalStorage from 'hooks/useLocalStorage'
 
 export const useWeb3 = () => {
-    const { active, activate, library, account } = useWeb3React<ethers.providers.Web3Provider>()
+    const { active, activate, library, account } = useWeb3React<ethers.BrowserProvider>()
     const [,setValue] = useLocalStorage("provider", null as unknown)
 
     const connectWallet = () => {
@@ -15,16 +15,16 @@ export const useWeb3 = () => {
     const getAccountBalance = () => {
         return (account && library) 
             && library.getBalance(account)
-                .then(balance => ethers.utils.formatEther(balance)) || null
+                .then(balance => ethers.formatEther(balance)) || null
     }
 
-    const mintNFT = ({tokenAdress, tokenAbi, tokenUri}: {
+    const mintNFT = async ({tokenAdress, tokenAbi, tokenUri}: {
         tokenAdress: string,
         tokenAbi: string,
         tokenUri: string
     }) => {
         return (account && library) 
-            && new ethers.Contract(tokenAdress, tokenAbi, library?.getSigner(account))
+            && new ethers.Contract(tokenAdress, tokenAbi, await library?.getSigner(account))
                 .safeMint(account, tokenUri) as Promise<any>
     }
 
