@@ -3,15 +3,15 @@ import {
   DialogContent,
   DialogTitle,
   DialogActions,
-} from "@mui/material";
-import Button from "components/button/button";
-import { ReactNode, useCallback } from "react";
-import { styled } from "styled-components";
-import { BrowserProvider } from "ethers";
-import { useWeb3 } from "../../web3/useWeb3";
+} from "@mui/material"
+import Button from "components/button/button"
+import { ReactNode, useCallback, useEffect, useState } from "react"
+import { styled } from "styled-components"
+import { BrowserProvider } from "ethers"
+import { useWeb3 } from "../../web3/useWeb3"
 
-import metamaskLogo from "../../assets/images/mm.png";
-import etherLogo from "assets/images/EtheriumIcon.svg";
+import metamaskLogo from "../../assets/images/mm.png"
+import etherLogo from "assets/images/EtheriumIcon.svg"
 
 const Styled = {
   BootstrapDialog: styled(Dialog)`
@@ -48,16 +48,16 @@ const Styled = {
     height: 50px;
     width: 50px;
   `,
-};
-
-export interface PropsConfirmation {
-  open: boolean;
-  title?: string;
-  content?: string | ReactNode;
-  onClose: () => void;
 }
 
-const provider = new BrowserProvider(window.ethereum);
+export interface PropsConfirmation {
+  open: boolean
+  title?: string
+  content?: string | ReactNode
+  onClose: () => void
+}
+
+const provider = new BrowserProvider(window.ethereum)
 
 const ModalConnectWallet = ({
   open,
@@ -65,19 +65,33 @@ const ModalConnectWallet = ({
   content,
   title,
 }: PropsConfirmation) => {
-  const { connectWallet } = useWeb3();
+  const { connectWallet, walletConnected, createSiweMessage } = useWeb3()
+  const [siwe, setSiwe] = useState(false)
 
-  const handleConnect = useCallback(() => {
-    connectWallet();
-    onClose();
-  }, [connectWallet, onClose]);
+  useEffect(() => {
+    if (siwe) {
+      // TODO: 
+      // 1. remove hard-coded value and use nonce from server side 
+      // 2. After user sign the message, send to server to verify and get jwt
+      createSiweMessage("EnZ3CLrm6ap78uiNE0MU")
+        .then(siwe => console.log(siwe))
+        .then(_ => setSiwe(false))
+    }
+    return () => setSiwe(false)
+  }, [walletConnected])
 
-  const connectEtherWallet = async () => {
-    await provider
-      .send("eth_requestAccounts", [])
-      .catch(() => console.log("user rejected request"));
-    onClose();
-  };
+  const connectMetamask = useCallback(() => {
+    connectWallet()
+    onClose()
+  }, [connectWallet, onClose])
+
+  const signInWithEthereum = useCallback(() => {
+    if (!walletConnected) {
+      connectWallet()
+    }
+    setSiwe(true)
+    onClose()
+  }, [onClose, createSiweMessage])
 
   return (
     <div>
@@ -89,23 +103,23 @@ const ModalConnectWallet = ({
         <Styled.Content dividers>
           <div>
             <Styled.BtnConfirm
-              onClick={handleConnect}
+              onClick={connectMetamask}
               text={"Metamask"}
               icon={<Styled.BtnLogo src={metamaskLogo} alt="metamask-logo" />}
             />
           </div>
           <div>
             <Styled.BtnConfirm
-              onClick={connectEtherWallet}
+              onClick={signInWithEthereum}
               className="bases__width100 bases__margin--top12"
-              text={"Etherium"}
+              text={"Sign in with Ethereum"}
               icon={<Styled.BtnLogo src={etherLogo} alt="etherium-logo" />}
             />
           </div>
         </Styled.Content>
       </Styled.BootstrapDialog>
     </div>
-  );
-};
+  )
+}
 
-export default ModalConnectWallet;
+export default ModalConnectWallet

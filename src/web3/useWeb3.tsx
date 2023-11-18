@@ -2,10 +2,11 @@ import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { connectors } from './connectors'
 import useLocalStorage from 'hooks/useLocalStorage'
+import { SiweMessage } from "siwe"
 
 export const useWeb3 = () => {
     const { active, activate, library, account } = useWeb3React<ethers.BrowserProvider>()
-    const [,setValue] = useLocalStorage("provider", null as unknown)
+    const [, setValue] = useLocalStorage("provider", null as unknown)
 
     const connectWallet = () => {
         return activate(connectors.injected)
@@ -13,25 +14,46 @@ export const useWeb3 = () => {
     }
 
     const getAccountBalance = () => {
-        return (account && library) 
+        return (account && library)
             && library.getBalance(account)
                 .then(balance => ethers.formatEther(balance)) || null
     }
 
-    const mintNFT = async ({tokenAdress, tokenAbi, tokenUri}: {
+    const mintNFT = async ({ tokenAdress, tokenAbi, tokenUri }: {
         tokenAdress: string,
         tokenAbi: string,
         tokenUri: string
     }) => {
-        return (account && library) 
+        return (account && library)
             && new ethers.Contract(tokenAdress, tokenAbi, await library?.getSigner(account))
                 .safeMint(account, tokenUri) as Promise<any>
     }
+
+    const createSiweMessage = async (nonce: string) =>
+        library && Promise.all([library.getSigner(), library.getNetwork()])
+            .then(async resolves => {
+                console.log(resolves)
+                const message = new SiweMessage({
+                    domain: "http://localhost",
+                    address: resolves[0]?.address,
+                    statement: "This is a test statement",
+                    uri: "http://localhost",
+                    version: "1",
+                    chainId: resolves[1]?.chainId as unknown as number,
+                    nonce
+                }).prepareMessage()
+                const signature = await resolves[0]?.signMessage(message)
+                return {
+                    message: message,
+                    signatrure: signature
+                }
+            })
 
     return {
         connectWallet: connectWallet,
         walletConnected: active,
         getAccountBalance: getAccountBalance,
-        mintNFT: mintNFT
+        mintNFT: mintNFT,
+        createSiweMessage: createSiweMessage
     } as const
 }
