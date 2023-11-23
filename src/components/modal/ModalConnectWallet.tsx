@@ -12,6 +12,7 @@ import { useWeb3 } from "../../web3/useWeb3"
 
 import metamaskLogo from "../../assets/images/mm.png"
 import etherLogo from "assets/images/EtheriumIcon.svg"
+import { getNonce, verify } from 'api/login/login.api'
 
 const Styled = {
   BootstrapDialog: styled(Dialog)`
@@ -70,11 +71,10 @@ const ModalConnectWallet = ({
 
   useEffect(() => {
     if (siwe) {
-      // TODO: 
-      // 1. remove hard-coded value and use nonce from server side 
-      // 2. After user sign the message, send to server to verify and get jwt
-      createSiweMessage("EnZ3CLrm6ap78uiNE0MU")
-        .then(siwe => console.log(siwe))
+      getNonce()
+        .then(nonce => createSiweMessage(nonce))
+        .then(siwe => verify(siwe))
+        .then(token => console.log(token))
         .then(_ => setSiwe(false))
     }
     return () => setSiwe(false)
