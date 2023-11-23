@@ -124,15 +124,6 @@ const Login = () => {
                 className="btn-success"
                 isLoading={isLoading}
               />
-              {/* Ether login */}
-              <LoginStyled.Button
-                type="submit"
-                text="Log In With Etherium"
-                className="btn-success bases__margin--top16"
-                isLoading={isLoading}
-                icon={<EtherIcon />}
-                onClick={signInWithEthereum}
-              />
               <LoginStyled.SignUp>
                 <LoginStyled.Link href="https://www.envirocapture.au/contact">
                   Don’t have an account? Contact Us
