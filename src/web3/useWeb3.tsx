@@ -32,6 +32,8 @@ export const useWeb3 = () => {
     const createSiweMessage = async (nonce: string) =>
         library && Promise.all([library.getSigner(), library.getNetwork()])
             .then(async resolves => {
+                const issuedAt = new Date()
+                const expirationTime = new Date(issuedAt.getTime() + 30 * 60000)
                 const message = new SiweMessage({
                     domain: "localhost",
                     address: resolves[0]?.address,
@@ -39,8 +41,10 @@ export const useWeb3 = () => {
                     uri: "http://localhost",
                     version: "1",
                     chainId: resolves[1]?.chainId as unknown as number,
+                    issuedAt: issuedAt.toISOString(),
+                    expirationTime: expirationTime.toISOString(),
                     nonce
-                }).prepareMessage()
+                }).prepareMessage();
                 const signature = await resolves[0]?.signMessage(message)
                 return {
                     message: message,
