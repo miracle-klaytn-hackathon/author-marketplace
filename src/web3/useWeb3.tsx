@@ -32,9 +32,8 @@ export const useWeb3 = () => {
     const createSiweMessage = async (nonce: string) =>
         library && Promise.all([library.getSigner(), library.getNetwork()])
             .then(async resolves => {
-                console.log(resolves)
                 const message = new SiweMessage({
-                    domain: "http://localhost",
+                    domain: "localhost",
                     address: resolves[0]?.address,
                     statement: "This is a test statement",
                     uri: "http://localhost",

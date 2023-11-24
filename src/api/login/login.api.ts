@@ -8,7 +8,7 @@ interface PayloadSignIn {
 
 interface SiweRequest {
   message: string | undefined
-  signatrure: string | undefined
+  signature: string | undefined
 }
 
 export const getNonce = () => {

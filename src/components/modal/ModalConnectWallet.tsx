@@ -73,7 +73,10 @@ const ModalConnectWallet = ({
     if (siwe) {
       getNonce()
         .then(nonce => createSiweMessage(nonce))
-        .then(siwe => verify(siwe))
+        .then(siwe => verify({
+          message: siwe?.message,
+          signature: siwe?.signatrure
+        }))
         .then(token => console.log(token))
         .then(_ => setSiwe(false))
     }
