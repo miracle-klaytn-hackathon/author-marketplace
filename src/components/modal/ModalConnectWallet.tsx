@@ -2,14 +2,17 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Typography,
   DialogActions,
-} from "@mui/material";
-import Button from "components/button/button";
-import { ReactNode, useCallback } from "react";
-import { styled } from "styled-components";
-import metamaskLogo from "../../assets/images/mm.png";
-import { useWeb3 } from '../../web3/useWeb3'
+} from "@mui/material"
+import Button from "components/button/button"
+import { ReactNode, useCallback, useEffect, useState } from "react"
+import { styled } from "styled-components"
+import { BrowserProvider } from "ethers"
+import { useWeb3 } from "../../web3/useWeb3"
+
+import metamaskLogo from "../../assets/images/mm.png"
+import etherLogo from "assets/images/EtheriumIcon.svg"
+import { getNonce, verify } from 'api/login/login.api'
 
 const Styled = {
   BootstrapDialog: styled(Dialog)`
@@ -45,15 +48,17 @@ const Styled = {
   BtnLogo: styled.img`
     height: 50px;
     width: 50px;
-  `
-};
+  `,
+}
 
 export interface PropsConfirmation {
-  open: boolean;
-  title?: string;
-  content?: string | ReactNode;
-  onClose: () => void;
+  open: boolean
+  title?: string
+  content?: string | ReactNode
+  onClose: () => void
 }
+
+const provider = new BrowserProvider(window.ethereum)
 
 const ModalConnectWallet = ({
   open,
@@ -61,12 +66,35 @@ const ModalConnectWallet = ({
   content,
   title,
 }: PropsConfirmation) => {
-  const { connectWallet } = useWeb3();
+  const { connectWallet, walletConnected, createSiweMessage } = useWeb3()
+  const [siwe, setSiwe] = useState(false)
 
-  const handleConnect = useCallback(() => {
+  useEffect(() => {
+    if (siwe) {
+      getNonce()
+        .then(nonce => createSiweMessage(nonce))
+        .then(siwe => verify({
+          message: siwe?.message,
+          signature: siwe?.signatrure
+        }))
+        .then(token => console.log(token))
+        .then(_ => setSiwe(false))
+    }
+    return () => setSiwe(false)
+  }, [walletConnected])
+
+  const connectMetamask = useCallback(() => {
     connectWallet()
-    onClose();
-  }, [connectWallet, onClose]);
+    onClose()
+  }, [connectWallet, onClose])
+
+  const signInWithEthereum = useCallback(() => {
+    if (!walletConnected) {
+      connectWallet()
+    }
+    setSiwe(true)
+    onClose()
+  }, [onClose, createSiweMessage])
 
   return (
     <div>
@@ -78,19 +106,23 @@ const ModalConnectWallet = ({
         <Styled.Content dividers>
           <div>
             <Styled.BtnConfirm
-              onClick={handleConnect} 
-              text={"Metamask"} 
-              icon={
-                <Styled.BtnLogo 
-                  src={metamaskLogo} 
-                  alt='metamask-logo' 
-                />} 
-              />
+              onClick={connectMetamask}
+              text={"Metamask"}
+              icon={<Styled.BtnLogo src={metamaskLogo} alt="metamask-logo" />}
+            />
+          </div>
+          <div>
+            <Styled.BtnConfirm
+              onClick={signInWithEthereum}
+              className="bases__width100 bases__margin--top12"
+              text={"Sign in with Ethereum"}
+              icon={<Styled.BtnLogo src={etherLogo} alt="etherium-logo" />}
+            />
           </div>
         </Styled.Content>
       </Styled.BootstrapDialog>
     </div>
-  );
-};
+  )
+}
 
-export default ModalConnectWallet;
+export default ModalConnectWallet

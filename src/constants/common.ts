@@ -13,3 +13,5 @@ export enum CategoryTypes {
   MOBILE_TRANSPORTS_FUELS = "MOBILE_TRANSPORTS_FUELS",
   ELECTRICITY = "ELECTRICITY",
 }
+
+export const BASE_API = process.env.REACT_APP_API || "http://localhost:8080/author-contract"

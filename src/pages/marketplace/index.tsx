@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import { BookToken, getBookTokens } from 'api/tokens/token'
 import { ReactComponent as IconSearch } from "assets/images/Search_alt.svg";
 import NftCard from "components/nft-card/NftCard";
 import TextField from "components/text-field/text-field";

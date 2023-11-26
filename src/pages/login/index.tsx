@@ -15,6 +15,15 @@ import * as yup from "yup";
 import { signIn } from "api/login/login.api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { BrowserProvider } from "ethers";
+import { SiweMessage } from "siwe";
+
+import { ReactComponent as EtherIcon } from "assets/images/EtheriumIcon.svg";
+import { BASE_API } from "constants/common";
+
+const domain = window.location.host;
+const origin = window.location.origin;
+const provider = new BrowserProvider(window.ethereum);
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,6 +68,10 @@ const Login = () => {
       .required("This is required field!"),
     password: yup.string().required("This is required field!"),
   });
+
+
+
+
 
   return (
     <LoginStyled.Container>
