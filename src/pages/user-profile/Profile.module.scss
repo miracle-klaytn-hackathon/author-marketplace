@@ -1,0 +1,58 @@
+.customTooltip {
+    position: absolute;
+
+    @media screen and (min-width: 375px) and (max-width: 449px) {
+        top: 70%;
+        left: 75%;
+    }
+
+    @media screen and (min-width: 450px) and (max-width: 501px) {
+        top: 70%;
+        left: 75%;
+    }
+
+    @media screen and (min-width: 502px) and (max-width: 649px) {
+        top: 80%;
+        left: 80%;
+    }
+
+    @media screen and (min-width: 650px) and (max-width: 767.9px) {
+        top: 77%;
+        left: 80%;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 899px) {
+        top: 84%;
+        left: 84%;
+    }
+
+    @media screen and (min-width: 900px) and (max-width: 991px) {
+        top: 72%;
+        left: 80%;
+    }
+
+    @media screen and (min-width: 992px) and (max-width: 1199px) {
+        top: 77%;
+        left: 82%;
+    }
+
+    @media screen and (min-width: 1200px) and (max-width: 1409px) {
+        top: 62%;
+        left: 74%;
+    }
+
+    @media screen and (min-width: 1300px) and (max-width: 1409px) {
+        top: 66%;
+        left: 76%;
+    }
+
+    @media screen and (min-width: 1410px) and (max-width: 1499px) {
+        top: 67%;
+        left: 76%;
+    }
+
+    @media screen and (min-width: 1500px) {
+        top: 70%;
+        left: 80%;
+    }
+}
