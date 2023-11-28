@@ -1,0 +1,7 @@
+.customTooltip  {
+    position: absolute;
+    @media screen and (min-width: 1200px) and (max-width: 1299px) {
+        top: 62%;
+        left: 74%;
+    }
+}

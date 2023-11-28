@@ -1,6 +1,10 @@
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import styled from "styled-components";
+import Title from "./Title";
+import ProfileCard from "./ProfileCard";
+import { PROFILE } from "constants/common";
+import Collection from "./Collection";
 
 const Styled = {
   Container: styled.div`
@@ -24,27 +28,54 @@ const Styled = {
   `,
 };
 
+const mockApi = [
+  {
+    bookName: "test",
+    bookImg: "https://enftx.vercel.app/images/items/2.jpg",
+    bookAuthor: {
+      name: "long",
+      avatar: "https://enftx.vercel.app/images/avatar/2.jpg",
+    },
+  },
+  {
+    bookName: "test",
+    bookImg: "https://enftx.vercel.app/images/items/2.jpg",
+    bookAuthor: {
+      name: "long",
+      avatar: "https://enftx.vercel.app/images/avatar/2.jpg",
+    },
+  },
+  {
+    bookName: "test",
+    bookImg: "https://enftx.vercel.app/images/items/2.jpg",
+    bookAuthor: {
+      name: "long",
+      avatar: "https://enftx.vercel.app/images/avatar/2.jpg",
+    },
+  },
+  {
+    bookName: "test",
+    bookImg: "https://enftx.vercel.app/images/items/2.jpg",
+    bookAuthor: {
+      name: "long",
+      avatar: "https://enftx.vercel.app/images/avatar/2.jpg",
+    },
+  },
+];
+
 const UserProfile = () => {
   return (
     <Styled.Container>
       <h1>User Profile</h1>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <div className="line-info">
-            <div className="name">
-              <div className="avatar" />
-            </div>
-            <div className="value">Name user</div>
-          </div>
-          <div className="line-info">
-            <div className="name">Email</div>
-            <div className="value">hehe@gmail.com</div>
-          </div>
-          <div className="line-info">
-            <div className="name">Phone</div>
-            <div className="value">1235</div>
-          </div>
-        </Grid>
+      <Title />
+      <Grid container>
+        <ProfileCard
+          avatarLink={PROFILE.SAMPLE_PROFILE_CARD_PROPS.avatarLink}
+          walletAdress={PROFILE.SAMPLE_PROFILE_CARD_PROPS.walletAdress}
+          userName={PROFILE.SAMPLE_PROFILE_CARD_PROPS.userName}
+          email={PROFILE.SAMPLE_PROFILE_CARD_PROPS.email}
+        />
+        <Collection collectionList={mockApi} />
       </Grid>
     </Styled.Container>
   );

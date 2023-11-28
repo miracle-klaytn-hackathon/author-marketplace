@@ -34,4 +34,6 @@ const ROUTES = {
   create: "create",
 };
 
+Object.freeze(ROUTES)
+
 export default ROUTES;

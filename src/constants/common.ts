@@ -15,3 +15,12 @@ export enum CategoryTypes {
 }
 
 export const BASE_API = process.env.REACT_APP_API || "http://localhost:8080/author-contract"
+
+export const PROFILE = {
+  SAMPLE_PROFILE_CARD_PROPS: {
+    avatarLink: "https://enftx.vercel.app/images/avatar/1.jpg",
+    walletAdress: process.env.WALLET_ADRESS || "0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c",
+    userName: "khankluan24",
+    email: "abc@gmail.com",
+  }
+}
